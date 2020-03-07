@@ -9,10 +9,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import re
-import os
 ### Clean NFL data
 
-nfl_data = pd.read_csv('nfl_salary_data_unclean.csv')
+nfl_data = pd.read_csv(r'C:\Users\nlpru\Desktop\salary_distribution_project-master\nfl_salary_data_unclean.csv')
 
 """ From NFL data we need Player and Avg./Year columns. Need to add 'Sport' column to identify the sport. Remove Pos, Team, and Total Value
     1. Remove Pos, Team, and Total Value
@@ -32,16 +31,13 @@ nfl_data['Salary'] = nfl_data['Salary'].apply(lambda x: int(x.replace(',','').st
 #Should I drop Salary values that are zero?
 
 """ Add 'League' column """
-nfl_league = []
-for x in range(len(nfl_data)):
-    nfl_league.append('NFL')
-nfl_data['League'] = nfl_league ## League NFL is a list the length of the dataframe with the string 'NFL' at each index
+nfl_data['League'] = ['NFL' for x in range(len(nfl_data))] ## League NFL is a list the length of the dataframe with the string 'NFL' at each index
 
 
 
 ### Clean MLB data
 
-mlb_data = pd.read_csv('mlb_salary_data_unclean.csv')
+mlb_data = pd.read_csv(r'C:\Users\nlpru\Desktop\salary_distribution_project-master\mlb_salary_data_unclean.csv')
 
 """ From MLB data we need Name, Avg Annual column. Need to add 'League' column to identify the League. Remove rank, Team, POS, Salary, Years, Total Value 
     1. Remove rank, Team, POS, Salary, Years, Total Value columns
@@ -67,14 +63,11 @@ def clean_mlb_salary(salary):
 mlb_data['Salary'] = mlb_data['Salary'].apply(clean_mlb_salary)
 
 """ Add 'League' Column """
-mlb_league = []
-for x in range(len(mlb_data)):
-    mlb_league.append('MLB')
-mlb_data['League'] = mlb_league
+mlb_data['League'] = ['MLB' for x in range(len(mlb_data))]
 
 
 ### Clean NHL data
-nhl_data = pd.read_csv('nhl_salary_data_unclean.csv')
+nhl_data = pd.read_csv(r'C:\Users\nlpru\Desktop\salary_distribution_project-master\nhl_salary_data_unclean.csv')
 
 """ From NHL data we need Player, Salary. Need to add 'League' column to identify the League. Remove Cap Hit, Tm. Move 'Player' to front. Change salary to int.
     1. Remove Cap Hit, Tm
@@ -92,14 +85,18 @@ nhl_data['Salary'] = nhl_data['Salary'].apply(lambda x: int(x.replace(',','')))
 nhl_data = nhl_data[['Player','Salary']]
 
 """ Add 'League' column """
-nhl_league = []
-for x in range(len(nhl_data)):
-    nhl_league.append('NHL')
-nhl_data['League'] = nhl_league
+nhl_data['League'] = ['NHL' for x in range(len(nhl_data))]
 
+def player_remove_comma(player):
+    """ Parameter is player name. First player name has 'last name, first name' formatting. Need to fix"""
+    if ',' in player:
+        return player.split(',')[1].strip() + ' ' + player.split(',')[0].strip()
+    else:
+        return player
+nhl_data['Player'] = nhl_data['Player'].apply(player_remove_comma)
 
 ### Clean NBA Data
-nba_data = pd.read_csv('nba_salary_data_unclean.csv')
+nba_data = pd.read_csv(r'C:\Users\nlpru\Desktop\salary_distribution_project-master\nba_salary_data_unclean.csv')
 
 """ From NBA data we need Player, Avg. Salary. Remove Pos, Team, Age, Yrs, Dollars, Guaranteed, % GTD, Free Agent. Fix Player column. Change Salary to int. Add League column
     1. Remove Pos, Team, Age, Yrs, Dollars, Guaranteed, % GTD, Free Agent
@@ -123,17 +120,14 @@ player_pattern = re.compile('[A-Z][a-z]+') ### Matches first and last names
 nba_data['Player'] = nba_data['Player'].apply(lambda x: player_pattern.findall(x)[1] + ' ' + player_pattern.findall(x)[0]) ### Find all returns a list of string matches. Indexing list, as in the value at index 1 is the first name, index 0 is last name
 
 """ Add League columm """
-nba_league = []
-for x in range(len(nba_data)):
-    nba_league.append('NBA')
-nba_data['League'] = nba_league
+nba_data['League'] = ['NBA' for x in range(len(nba_data))]
 
 
 """ Concat DataFrames, then save as one csv """
 
 salary_df = pd.concat([nba_data,nfl_data,mlb_data,nhl_data])
 
-salary_df.to_csv('salary_data.csv',index = False)
+salary_df.to_csv(r'C:\Users\nlpru\Desktop\salary_distribution_project-master\salary_data.csv',index = False)
 
 
 

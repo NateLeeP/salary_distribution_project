@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 from lorenz_curve_functions import lorenz_curve_values
+from gini import *
 
 salary_df = pd.read_csv('salary_data.csv')
 

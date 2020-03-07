@@ -21,7 +21,7 @@ nfl_data_headers = [th.text for th in nfl_soup.findAll('th')[0:5]]
 
 nfl_data_df = pd.DataFrame(nfl_data, columns = nfl_data_headers)
 
-nfl_data_df.to_csv('nfl_salary_data_unclean.csv',index = False)
+nfl_data_df.to_csv(r'C:\Users\nlpru\Desktop\salary data csv test\nfl_salary_data_unclean.csv',index = False)
 
 
 """ Collecting the MLB data """
@@ -35,7 +35,7 @@ mlb_data = [[td.text.strip() for td in tr.findAll('td')] for tr in mlb_soup.find
 mlb_headers = [th.text.strip() for th in mlb_soup.findAll('th')]
 ### Create data frame
 mlb_data_df = pd.DataFrame(mlb_data,columns = mlb_headers)
-mlb_data_df.to_csv('mlb_salary_data_unclean.csv', index = False)
+mlb_data_df.to_csv(r'C:\Users\nlpru\Desktop\salary data csv test\mlb_salary_data_unclean.csv', index = False)
 
 
 """ Collecting NHL Data """
@@ -56,7 +56,7 @@ nhl_players = pd.Series(nhl_data_players).apply(lambda x: x[0])
 
 nhl_data_df['Player'] = nhl_players
 
-nhl_data_df.to_csv('nhl_salary_data_unclean.csv',index = False)
+nhl_data_df.to_csv(r'C:\Users\nlpru\Desktop\salary data csv test\nhl_salary_data_unclean.csv',index = False)
 """ Collecting NBA Data """
 nba_salary_url = 'https://www.spotrac.com/nba/contracts/'
 nba_requests = requests.get(nba_salary_url).text
@@ -67,5 +67,5 @@ nba_data_headers = [th.text for th in nba_soup.findAll('tr')[0].findAll('th')]
 
 nba_data_df = pd.DataFrame(nba_data, columns = nba_data_headers)
 
-nba_data_df.to_csv('nba_salary_data_unclean.csv', index = False)
+nba_data_df.to_csv(r'C:\Users\nlpru\Desktop\salary data csv test\nba_salary_data_unclean.csv', index = False)
 
